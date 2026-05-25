@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "Nowy Profil",
+    "Projects": [
+      {
+        "Path": "Velora.Api\\Velora.Api.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "Velora.Frontend\\Velora.Frontend\\Velora.Frontend.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Velora.Frontend\\Velora.Frontend.Web\\Velora.Frontend.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

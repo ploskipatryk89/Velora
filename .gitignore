@@ -1,0 +1,31 @@
+# .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Env
+.env
+
+# Mac
+.DS_Store
+
+# React Native
+.expo/
+android/.gradle/
+android/app/build/
+ios/build/
+
+# Coverage
+coverage/
+
+# Build
+dist/
+build/
