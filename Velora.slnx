@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="backend/Velora.Api/Velora.Api.csproj" />
+  <Project Path="backend/Velora.Application/Velora.Application.csproj" />
+  <Project Path="backend/Velora.Domain/Velora.Domain.csproj" />
+  <Project Path="backend/Velora.Infrastructure/Velora.Infrastructure.csproj" />
+</Solution>

@@ -43,6 +43,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
             title = exception.Message,
             status = statusCode,
             errors = GetErrors(exception)
+            
         };
 
         context.Response.ContentType = "application/json";
