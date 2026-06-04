@@ -26,17 +26,13 @@ Velora helps users manage personal finances by tracking expenses, planning budge
 - CQRS
 
 ### Web
-
-- Blazor
-- C#
-- Razor Components
+-react
 - CSS
+- -tailwind
 
 ### Mobile
 
-- .NET MAUI
-- XAML
-- MVVM
+-react-native
 
 ### Shared
 
@@ -61,25 +57,6 @@ Velora/
 ├── frontend/
 │   ├── Velora.Web
 │   └── Velora.Mobile
-│
-└── shared/
-    └── Velora.Shared
-```
-
-## Future Plans
-
-The primary goal of this project is to learn and explore the Microsoft ecosystem by building the application with:
-
-- ASP.NET Core
-- Blazor
-- .NET MAUI
-
-After the core functionality is completed, the web frontend may be rebuilt using:
-
-- React
-- TypeScript
-
-This will allow direct comparison between Blazor and React while keeping the same backend and business logic.
 
 ## Status
 
