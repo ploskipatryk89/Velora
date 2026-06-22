@@ -1,8 +1,8 @@
 # Velora
-Modern personal finance management application built with ASP.NET Core, React, and React Native. Track expenses, manage budgets, loans, bills, and financial goals in one place.
-# Velora
 
-Modern personal finance management application built with ASP.NET Core, React, and React Native.
+Modern personal finance management application built with ASP.NET Core, Blazor, and .NET MAUI.
+
+Velora helps users manage personal finances by tracking expenses, planning budgets, monitoring loans and bills, and analyzing financial data in one place.
 
 ## Features
 
@@ -16,20 +16,29 @@ Modern personal finance management application built with ASP.NET Core, React, a
 ## Tech Stack
 
 ### Backend
+
 - ASP.NET Core Web API
 - Entity Framework Core
+- SQL Server
 - JWT Authentication
 - FluentValidation
-- -sql server
+- MediatR
+- CQRS
 
-### Frontend
-- React
-- TypeScript
-
+### Web
+-react
+- CSS
+- -tailwind
 
 ### Mobile
-- React Native
-- Expo
+
+-react-native
+
+### Shared
+
+- Shared DTOs
+- Request / Response contracts
+- Common models
 
 ## Architecture
 
@@ -37,6 +46,17 @@ Modern personal finance management application built with ASP.NET Core, React, a
 - Vertical Slice Architecture
 - CQRS
 
+## Project Structure
+
+```text
+Velora/
+
+├── backend/
+│   └── Velora.Api
+│
+├── frontend/
+│   ├── Velora.Web
+│   └── Velora.Mobile
 
 ## Status
 
