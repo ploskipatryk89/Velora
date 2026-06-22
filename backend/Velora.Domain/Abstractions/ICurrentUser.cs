@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Velora.Domain.Abstractions
 {
-    public interface IUnitOfWork
+    public interface ICurrentUser
     {
-        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+        Guid GetCurrentUser();
     }
 }

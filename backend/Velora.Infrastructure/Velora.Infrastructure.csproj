@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Velora.Application\Velora.Application.csproj" />
     <ProjectReference Include="..\Velora.Domain\Velora.Domain.csproj" />
   </ItemGroup>
 

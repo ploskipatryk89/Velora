@@ -10,6 +10,12 @@ namespace Velora.Infrastructure.Context
     public class VeloraDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<RecurringBill> RecurringBills { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<ScheduledPayment> ScheduledPayments { get; set; }
+       
         public VeloraDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -25,6 +31,7 @@ namespace Velora.Infrastructure.Context
             modelBuilder.HasDefaultSchema("velora");
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new BankAccountConfiguration());
         }
        
     }

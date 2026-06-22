@@ -32,20 +32,9 @@ export async function post<TRequest, TResponse>(endpoint: string, data: TRequest
 
     const errorData = await response.json();
 
-    if (errorData.errors) {
+    throw new Error(errorData.title ||  'An error occurred while making the request.');
 
-        const validationErrors = Object.values(errorData.errors)
-            .flat()
-            .join("\n");
-
-        throw new Error(validationErrors);
-    }
-
-    throw new Error(
-        errorData.title ||
-        errorData.message ||
-        "Wystąpił błąd"
-    );
+    
 }
 //zwraca dane
     return response.json();

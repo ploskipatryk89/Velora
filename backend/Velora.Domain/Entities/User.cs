@@ -13,6 +13,11 @@ namespace Velora.Domain.Entities
         //Auth
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+
+        //Navigation
+        public ICollection<BankAccount> BankAccounts { get; set; }
+
+        public ICollection<Payment> Payments { get; set; }
        
 
         private User()
@@ -27,8 +32,7 @@ namespace Velora.Domain.Entities
             LastName = lastName;
             Email = email;
             PasswordHash = passwordHash;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
+          
         }
 
      

@@ -9,7 +9,7 @@ function AuthButton({ children, onClick}: ButtonProps) {
         onClick={onClick}
             className="
                 mt-2
-                rounded-xl
+                rounded-2xl
                 bg-violet-600
                 py-3
                 font-semibold

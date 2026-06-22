@@ -1,44 +1,51 @@
 ﻿using Mapster;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore; // Wymagane dla metody AnyAsync()
+using System.Threading;
+using System.Threading.Tasks;
 using Velora.Domain.Abstractions;
 using Velora.Domain.Entities;
 using Velora.Domain.Exceptions.Users;
+using Velora.Infrastructure.Context;
 
 namespace Velora.Application.Features.Users.Commands.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly VeloraDbContext _context;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
+        public RegisterCommandHandler(VeloraDbContext context, IPasswordHasher passwordHasher)
         {
-            _userRepository = userRepository;
+            _context = context;
             _passwordHasher = passwordHasher;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var userExists = await _userRepository.IsAlreadyExistAsync(request.Email, cancellationToken);
+            // 1. Sprawdzenie, czy użytkownik z takim mailem już istnieje w bazie (zamiast starego repo)
+            var emailExists = await _context.Users
+                .AnyAsync(u => u.Email == request.Email, cancellationToken);
 
-            if (userExists)
+            if (emailExists)
             {
+                // Tutaj rzucasz swój dedykowany wyjątek domenowy
                 throw new UserAlreadyExistsException(request.Email);
             }
 
+            // 2. Mapowanie komendy na encję User przy użyciu Mapstera
             var user = request.Adapt<User>();
 
+            // 3. Hashowanie hasła
             user.PasswordHash = _passwordHasher.HashPassword(request.Password);
 
-            _userRepository.Add(user);
+            // 4. Dodanie użytkownika do kontekstu bazy danych
+            _context.Users.Add(user);
 
-           await _unitOfWork.SaveChangesAsync(cancellationToken);
+            // 5. Zapis zmian w bazie (zastępuje metodę Commit z UnitOfWork)
+            await _context.SaveChangesAsync(cancellationToken);
 
+            // 6. Zwrócenie odpowiedzi
             return new RegisterResponse(user.Id, user.Email);
         }
     }

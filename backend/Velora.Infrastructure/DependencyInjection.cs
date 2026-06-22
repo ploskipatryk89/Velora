@@ -9,7 +9,8 @@ using System.Text;
 using Velora.Domain.Abstractions;
 using Velora.Infrastructure.Auth;
 using Velora.Infrastructure.Context;
-using Velora.Infrastructure.Repositories;
+using Velora.Infrastructure.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Velora.Infrastructure
 {
@@ -17,10 +18,12 @@ namespace Velora.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IJwtProvider, JWTProvider>();
             services.AddScoped<IPasswordHasher, PasswordHash>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<IPaymentScheduleGenerator, PaymentScheduleGenerator>();
 
             services.AddDbContext<VeloraDbContext>(ctx => ctx.UseSqlServer(configuration.GetConnectionString("VeloraCS")));
 
@@ -39,6 +42,33 @@ namespace Velora.Infrastructure
 
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+            {
+                context.HandleResponse();
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    message = "Musisz sie zalogowac, aby wykonac te operacje"
+                });
+            }, 
+
+            OnForbidden = async context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    message = "Nie masz uprawnien do wykonania tej operacji."
+                });
+            }
         };
     });
 

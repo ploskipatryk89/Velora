@@ -23,6 +23,128 @@ namespace Velora.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Velora.Domain.Entities.BankAccount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BankAccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountNumber")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BankAccounts", "velora");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("BankAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.Property<string>("PaymentAccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payment", "velora");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Payment");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.ScheduledPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("PaidDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("ScheduledPayments", "velora");
+                });
+
             modelBuilder.Entity("Velora.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -60,6 +182,119 @@ namespace Velora.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", "velora");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.Bill", b =>
+                {
+                    b.HasBaseType("Velora.Domain.Entities.Payment");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.HasDiscriminator().HasValue("Bill");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.Loan", b =>
+                {
+                    b.HasBaseType("Velora.Domain.Entities.Payment");
+
+                    b.Property<DateOnly?>("ContractEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("ContractStartDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("InterestRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("PaymentEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("PaymentStartDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("PrincipalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("RemainingBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("Loan");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.RecurringBill", b =>
+                {
+                    b.HasBaseType("Velora.Domain.Entities.Payment");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasDiscriminator().HasValue("RecurringBill");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.BankAccount", b =>
+                {
+                    b.HasOne("Velora.Domain.Entities.User", "User")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("Velora.Domain.Entities.BankAccount", "BankAccount")
+                        .WithMany("Payments")
+                        .HasForeignKey("BankAccountId");
+
+                    b.HasOne("Velora.Domain.Entities.User", "User")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankAccount");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.ScheduledPayment", b =>
+                {
+                    b.HasOne("Velora.Domain.Entities.Payment", "Payment")
+                        .WithMany("ScheduledPayments")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.BankAccount", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.Payment", b =>
+                {
+                    b.Navigation("ScheduledPayments");
+                });
+
+            modelBuilder.Entity("Velora.Domain.Entities.User", b =>
+                {
+                    b.Navigation("BankAccounts");
+
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

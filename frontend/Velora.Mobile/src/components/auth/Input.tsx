@@ -36,6 +36,9 @@ function Input({
           px-4
           py-4
           text-white
+           focus:border-violet-500
+                    focus:ring-2
+                    focus:ring-violet-500/20
           
         "
       />

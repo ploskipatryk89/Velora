@@ -3,9 +3,4 @@
   <Project Path="backend/Velora.Application/Velora.Application.csproj" />
   <Project Path="backend/Velora.Domain/Velora.Domain.csproj" />
   <Project Path="backend/Velora.Infrastructure/Velora.Infrastructure.csproj" />
-  <Project Path="frontend/Velora/Velora.Shared/Velora.Shared.csproj" Id="fbe6201c-55ea-4467-8318-5237d3a2f217" />
-  <Project Path="frontend/Velora/Velora.Web/Velora.Web.csproj" Id="a7e27ac1-cf36-4a5f-8ca2-e16ce61aa6c0" />
-  <Project Path="frontend/Velora/Velora/Velora.csproj" Id="187f828a-9d65-48cf-8130-fc905c73c484">
-    <Deploy Solution="Debug|*" />
-  </Project>
 </Solution>
