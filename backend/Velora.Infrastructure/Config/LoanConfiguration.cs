@@ -10,7 +10,7 @@ namespace Velora.Infrastructure.Config
     {
         public override void Configure(EntityTypeBuilder<Loan> builder)
         {
-            base.Configure(builder);
+            
 
             builder.Property(l => l.Status)
                 .IsRequired()

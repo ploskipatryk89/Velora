@@ -11,7 +11,7 @@ namespace Velora.Infrastructure.Config
     {
         public override void Configure(EntityTypeBuilder<Bill> builder)
         {
-            base.Configure(builder);
+            
 
             builder.Property(b => b.DueDate)
                 .IsRequired();

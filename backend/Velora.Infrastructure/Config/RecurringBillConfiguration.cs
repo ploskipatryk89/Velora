@@ -11,7 +11,7 @@ namespace Velora.Infrastructure.Config
     {
         public override void Configure(EntityTypeBuilder<RecurringBill> builder)
         {
-            base.Configure(builder);
+            
 
             builder.Property(r => r.Frequency)
                 .IsRequired()

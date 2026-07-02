@@ -37,7 +37,7 @@ namespace Velora.Infrastructure.Config
             builder.HasOne(p => p.User)
                 .WithMany()
                 .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.BankAccount)
                 .WithMany()
