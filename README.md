@@ -53,6 +53,9 @@ Velora/
 
 ├── backend/
 │   └── Velora.Api
+    └── Velora.Application
+    └── Velora.Domain
+    └── Velora.Infrastructure
 │
 ├── frontend/
 │   ├── Velora.Web
