@@ -26,7 +26,6 @@
     <Folder Include="Features\Bills\Queries\" />
     <Folder Include="Features\Loans\Queries\" />
     <Folder Include="Features\RecurringBills\Queries\" />
-    <Folder Include="Features\SchedulePayment\Dtos\" />
     <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
